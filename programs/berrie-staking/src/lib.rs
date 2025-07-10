@@ -11,6 +11,17 @@ pub mod state;
 
 declare_id!("5FGWD8UZL1X67MV2NuSTS3aRLNMdwk4VdB5CXe3QcT3C");
 
+#[cfg(not(feature = "no-entrypoint"))]
+security_txt! {
+    name: "Berrie Staking Program",
+    project_url: "https://berr.ie/",
+    contacts: "twitter:BerrieOrg",
+    policy: "https://berrie.gitbook.io/berrie/privacy-policy",
+    preferred_languages: "en",
+    source_code: "https://github.com/BerrieDex/Staking/"
+}
+
+
 #[program]
 pub mod berrie_staking {
     use super::*;
