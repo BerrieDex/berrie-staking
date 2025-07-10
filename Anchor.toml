@@ -7,7 +7,7 @@ resolution = true
 skip-lint = false
 
 [programs.mainnet]
-berrie_staking = "5FGWD8UZL1X67MV2NuSTS3aRLNMdwk4VdB5CXe3QcT3C"
+berrie_staking = "4uSH1hFYxMf4CjzuKwh65hsawAso4ej3bRKGVYJ4gLSn"
 
 [registry]
 url = "https://api.apr.dev"
