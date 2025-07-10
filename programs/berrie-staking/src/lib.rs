@@ -4,6 +4,9 @@ use instructions::{
     user::{claim_token::*, stake_token::*, unstake_token::*},
 };
 
+#[allow(unused_imports)]
+use solana_security_txt::security_txt;
+
 pub mod constants;
 pub mod error;
 pub mod instructions;
