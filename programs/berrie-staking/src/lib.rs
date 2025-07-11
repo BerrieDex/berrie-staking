@@ -1,4 +1,4 @@
-use anchor_lang::prelude::*;
+euse anchor_lang::prelude::*;
 use instructions::{
     admin::deposit_token::*,
     user::{claim_token::*, stake_token::*, unstake_token::*},
@@ -21,7 +21,7 @@ security_txt! {
     contacts: "twitter:BerrieOrg",
     policy: "https://berrie.gitbook.io/berrie/privacy-policy",
     preferred_languages: "en",
-    source_code: "https://github.com/BerrieDex/Staking/"
+    source_code: "https://github.com/BerrieDex/berrie-staking/"
 }
 
 
