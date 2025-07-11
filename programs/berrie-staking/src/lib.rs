@@ -1,4 +1,4 @@
-euse anchor_lang::prelude::*;
+use anchor_lang::prelude::*;
 use instructions::{
     admin::deposit_token::*,
     user::{claim_token::*, stake_token::*, unstake_token::*},
