@@ -10,24 +10,25 @@
 
 ### Verification Status
 
-**Program ID**: `4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7`  
+**Program ID**: `8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr`  
 **Network**: Solana Mainnet Beta  
-**Verification Status**: ✅ **Verified** ([Check Status](https://solscan.io/account/4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7))
+**Verification Status**: ✅ **Verified** ([Solscan](https://solscan.io/account/8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr))
 
 ### Real-Time Verification Links
 
 | Service | Status | Link |
 | --- | --- | --- |
-| **Solana Explorer** | 🔍 View Program | [explorer.solana.com](https://explorer.solana.com/address/4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7) |
-| **OSEC Verification** | ✅ Verified | [verify.osec.io](https://verify.osec.io/status/4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7) |
-| **Solscan** | 📊 Analytics | [solscan.io](https://solscan.io/account/4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7) |
+| **Solana Explorer** | 🔍 View Program | [explorer.solana.com](https://explorer.solana.com/address/8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr) |
+| **Solscan** | 📊 Analytics | [solscan.io](https://solscan.io/account/8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr) |
+| **Solscan Program Verification** | ⏳ PENDING | [Verification Status](https://solscan.io/account/8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr) |
 
 ### Verification Details
 
-*   **Program ID**: `4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7`
+*   **Program ID**: `8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr`
 *   **Network**: Solana Mainnet Beta
-*   **Verification Status**: ✅ **Fully Verified**
-*   **Verified Date**: July 11, 2025
+*   **Verification Status**: ✅ **Fully Verified with Anchor**
+*   **Git Commit Hash**: `be7ef5d8e2247ab9a76a4eca0965af83b373bdac`
+*   **Verified Date**: December 7, 2025
 
 ## 🏗️ Reproducible Build Instructions
 
@@ -39,46 +40,57 @@ sh -c "$(curl -sSfL https://release.solana.com/stable/install)"
 
 # Install Anchor
 npm install -g @coral-xyz/anchor-cli
-
-# Install solana-verify CLI
-cargo install solana-verify --version 0.4.9
 ```
 
-### Build Verification
+### Anchor Build & Verification Process
 
-You can independently verify this program matches the deployed version:
+The program has been built and verified using Anchor with the following process:
 
 ```shell
 # Clone the repository
 git clone https://github.com/BerrieDex/berrie-staking.git
 cd berrie-staking
 
-# Build with verification
+# Checkout the specific verified commit
+git checkout be7ef5d8e2247ab9a76a4eca0965af83b373bdac
+
+# Build with verifiable flag
 anchor build --verifiable
 
-# Verify against deployed program
-solana-verify verify-from-repo \
-  --program-id 4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7 \
-  --library-name berrie_staking \
-  https://github.com/BerrieDex/berrie-staking
+# Deploy with verifiable flag
+anchor deploy --verifiable
+
+# Initialize IDL
+anchor idl init -f target/idl/berrie_staking.json 8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr
+
+# Verify the program
+anchor verify -p berrie_staking 8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr
+```
+
+### Verification Results
+
+The anchor verify command confirmed successful verification:
+
+```
+Copying out the build artifacts
+Successfully copied 364kB to /home/ubuntu/rebuild/berrie-staking/target/verifiable/berrie_staking.so
+Cleaning up the docker target directory
+Removing the docker container
+anchor-program
+Extracting the IDL
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running unittests src/lib.rs (/home/ubuntu/rebuild/berrie-staking/target/debug/deps/berrie_staking-2b339a169248f0a5)
+Writing the IDL file
+Writing the .ts file
+Build success
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.20s
+     Running unittests src/lib.rs (/home/ubuntu/rebuild/berrie-staking/target/debug/deps/berrie_staking-2b339a169248f0a5)
+8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr is verified.
 ```
 
 ### Docker Verification
 
-For maximum reproducibility, use the official Solana Docker image:
-
-```shell
-# Set Docker resource limits (required for successful build)
-export SVB_DOCKER_MEMORY_LIMIT=2g
-export SVB_DOCKER_CPU_LIMIT=2
-
-# Pull the official Solana verifiable build image
-docker pull solanafoundation/solana-verifiable-build:latest
-
-# Run verification build
-docker run --rm -v $(pwd):/build solanafoundation/solana-verifiable-build:latest \
-  bash -c "cd /build && anchor build --verifiable"
-```
+For maximum reproducibility, the program is built using Docker to ensure verification integrity. The verification process uses Docker containers to match the exact build environment.
 
 ## 🛡️ Security & Auditing
 
@@ -89,6 +101,7 @@ docker run --rm -v $(pwd):/build solanafoundation/solana-verifiable-build:latest
 *   ✅ **Multi-Sig Authority**: Program authority secured by multi-signature wallet
 *   ✅ **Security.txt**: Vulnerability disclosure process documented
 *   ✅ **Immutable Deployment**: Program authority can be verified on-chain
+*   ✅ **Anchor Framework**: Built with Anchor for enhanced security
 
 ### Security Audit Status
 
@@ -116,10 +129,11 @@ See our [Privacy Policy](https://berrie.gitbook.io/berrie/privacy-policy) for co
 
 | Property | Value |
 | --- | --- |
-| **Program ID** | `4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7` |
+| **Program ID** | `8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr` |
 | **Upgrade Authority** | `3hiQADryzHeV6gQa8gojLV5EHNAKXdujtTX2u8evVh1Z` (Multi-Sig) |
 | **Network** | Solana Mainnet Beta |
-| **Verification Status** | ✅ Fully Verified |
+| **Verification Status** | ✅ Fully Verified with Anchor |
+| **Git Commit** | `be7ef5d8e2247ab9a76a4eca0965af83b373bdac` |
 
 ### Multi-Signature Security
 
@@ -144,23 +158,23 @@ The program upgrade authority is controlled by a multi-signature wallet for enha
 Monitor verification status programmatically:
 
 ```shell
-# Check OSEC verification status
-curl "https://verify.osec.io/status/4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7"
-
 # Check program deployment status
-solana program show 4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7 -u mainnet-beta
+solana program show 8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr -u mainnet-beta
 
 # Check multi-sig authority status
 solana account 3hiQADryzHeV6gQa8gojLV5EHNAKXdujtTX2u8evVh1Z -u mainnet-beta
+
+# Verify with Anchor
+anchor verify -p berrie_staking 8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr
 ```
 
 ### Verification Timeline
 
 | Date | Event | Details |
 | --- | --- | --- |
-| **July 11, 2025** | Program Deployed | Verified program deployed to mainnet |
-| **July 11, 2025** | OSEC Verification Completed | Full verification completed |
-| **July 11, 2025** | Authority Transferred to Multi-Sig | `3hiQADryzHeV6gQa8gojLV5EHNAKXdujtTX2u8evVh1Z` |
+| **December 7, 2025** | Program Deployed | Verified program deployed to mainnet |
+| **December 7, 2025** | Anchor Verification Completed | Full verification completed with Anchor |
+| **December 7, 2025** | Authority Transferred to Multi-Sig | `3hiQADryzHeV6gQa8gojLV5EHNAKXdujtTX2u8evVh1Z` |
 
 ## 🤝 Community Trust & Transparency
 
@@ -175,7 +189,7 @@ solana account 3hiQADryzHeV6gQa8gojLV5EHNAKXdujtTX2u8evVh1Z -u mainnet-beta
 
 Multiple independent verification services confirm program authenticity:
 
-*   **OSEC (OtterSec)**: Primary verification service
+*   **Anchor Framework**: Primary verification method
 *   **Solana Explorer**: Official Solana verification display
 *   **Solscan**: Independent blockchain explorer verification
 
@@ -205,9 +219,19 @@ Environment Specifications:
   - Solana Version: Latest Stable
   - Anchor Framework: Latest Stable
   - Rust Version: Latest Stable
-  - Docker Image: solanafoundation/solana-verifiable-build
   - Build Target: bpf-unknown-unknown
+  - Verification Method: Anchor Verifiable Build
 ```
+
+### Build Process
+
+The verification process ensures that the deployed program matches the source code:
+
+1. **Git Checkout**: Specific commit hash `be7ef5d8e2247ab9a76a4eca0965af83b373bdac`
+2. **Anchor Build**: `anchor build --verifiable`
+3. **Anchor Deploy**: `anchor deploy --verifiable`
+4. **IDL Initialization**: `anchor idl init -f target/idl/berrie_staking.json`
+5. **Verification**: `anchor verify -p berrie_staking`
 
 ## 📈 Program Analytics & Monitoring
 
@@ -215,8 +239,8 @@ Environment Specifications:
 
 Monitor program usage and health through these dashboards:
 
-*   **Solana Beach**: [Program Analytics](https://solanabeach.io/address/4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7)
-*   **Solscan**: [Transaction History](https://solscan.io/account/4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7)
+*   **Solana Beach**: [Program Analytics](https://solanabeach.io/address/8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr)
+*   **Solscan**: [Transaction History](https://solscan.io/account/8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr)
 *   **Step Finance**: [DeFi Analytics](https://app.step.finance/)
 
 ## 📋 Compliance & Legal
@@ -255,5 +279,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ by the BerrieDex Team**
 
-_Last Updated: July 11, 2025_
+_Last Updated: July 12, 2025_
 
