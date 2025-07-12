@@ -12,7 +12,7 @@ pub mod error;
 pub mod instructions;
 pub mod state;
 
-declare_id!("4YXrP2NwHpCW7Vqwdmf7XVgnV7Fi345u9gLGW9ucuPW7");
+declare_id!("8Hcd5Kmi47JhgNr1GVYfAbMyXfwYo5T7UUYhGeEu8qPr");
 
 #[cfg(not(feature = "no-entrypoint"))]
 security_txt! {
